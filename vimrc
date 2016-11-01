@@ -28,11 +28,19 @@ endif
 set rtp+=~/.dotfiles/vim/bundle/vundle/
 call vundle#rc()
 
+" Requirment for syntastic
+execute pathogen#infect()
 " Required Bundle
 Bundle 'gmarik/vundle'
 " Additional Bundles go here"
 " autocomplete
 Bundle 'Valloric/YouCompleteMe'
+" tabular
+Bundle 'godlygeek/tabular'
+" syntastic
+Bundle 'scrooloose/syntastic'
+" colors
+Bundle 'dracula/vim'
 
 " Installing plugins the first time
 " If exists, skip
@@ -74,15 +82,31 @@ else
   endif
 endif
 
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let &colorcolumn=join(range(81,81),",")
+
+"-----------------------------------------------------------------------------
+" Syntastic basic settings
+"-----------------------------------------------------------------------------
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+:command Sc SyntasticCheck
+
+" ctrl-w E to toggle syntastic
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+
 "-----------------------------------------------------------------------------
 " Search, highlight, spelling, etc.
 "-----------------------------------------------------------------------------
-
-" Improved searching
-nnoremap / /\v
-vnoremap / /\v
-set ignorecase
-set smartcase
 
 set incsearch
 
